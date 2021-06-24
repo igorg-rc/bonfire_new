@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Roboto',  'Oxygen', 'Ubuntu',  'Segoe UI', 
+     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+/*============================================ Custom css ========================================= */
+
+/* Vertical aligning the images in MUI tables - added it to styles in TechnologiesTable.js file */
+/* th img {
+  vertical-align: middle;
+} */ 
+
+
+/* MuiToolbar-root MuiToolbar-regular MuiTablePagination-toolbar MuiToolbar-gutters */
+.MuiToolbar-root {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-right: 80px;
+}
+
+.MuiToolbar-root p {
+  padding: 0 5px;
+}

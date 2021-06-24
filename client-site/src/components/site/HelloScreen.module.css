@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
+
+.HelloBox {
+  padding: 20vh 0;
+  background: rgba(0, 0, 0, 0.6);
+  height: 100vh;
+  width: 100%;
+}
+
+.LogoImage {
+  width: 100px;
+}
+
+.HelloBox i:hover {
+  scale: 110%;
+  color: #ffe0b2 !important;
+  transition: 0.5s;
+}
+
+.HelloBox h2, h5 {
+  font-weight: 100;
+}
+
+.HelloBox h2 {
+  padding: 3vh 0;
+}
+
+.HelloBox span {
+  color: '#009688'
+}
+
+@media (max-width: 420px) {
+  .HelloBox h2 {
+    font-size: 2rem;
+  }
+
+  .HelloBox h5 {
+    font-size: 1.2rem;
+  }
+
+  .HelloBox i {
+    font-size: 2.2rem !important;
+  }
+
+  .LogoImage {
+    width: 35px;
+  }
+}
+
+.Main {
+  background: url(/src/img/site/index2.jpg) no-repeat center/cover;
+  height: 100vh;
+  position: relative;
+  color: #fff;
+  font-family: 'Roboto' sans-serif;
+}
+
+.ArrowDown {
+  font-size: 60px !important;
+  color: #fb8c00;
+}
+
+.ArrowDown:hover {
+  color: #fff;
+  cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+  .Main {
+    background-position: 70% 100%;
+  }
+}
+
+@media (max-width: 800px) {
+  .Main {
+    background-position: 80% 100%;
+  }
+}
+
+

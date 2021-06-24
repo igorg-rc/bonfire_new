@@ -1,0 +1,28 @@
+{
+  "name": "bonfire_new",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "concurrently": "^6.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.14",
+    "multer": "^1.4.2",
+    "react-data-table-component": "^6.11.7",
+    "styled-components": "^5.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "client-admin": "npm run start --prefix client-admin",
+    "client-site": "npm run start --prefix client-site",
+    "dev": "concurrently \"npm run server\" \"npm run client-admin\" \"npm run client-site\""
+  },
+  "author": "",
+  "license": "ISC"
+}
