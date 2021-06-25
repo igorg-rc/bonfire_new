@@ -25,12 +25,6 @@ export default function Messages() {
     setMessage(fetchedMessage)
   }
 
-  // const message_checked = data[(data.length) / 2]
-
-  // useEffect(() => {
-  //   setMessage(message_checked)
-  // }, [message_checked])
-
   console.log(message)
 
   return (

@@ -21,8 +21,12 @@ app.use(express.urlencoded({ extended: true }))
 
 
 app.use('/downloads/images/industries', express.static(path.join(__dirname, 'downloads', 'images', 'industries')))
+app.use('/downloads/images/technologies', express.static(path.join(__dirname, 'downloads', 'images', 'technologies')))
 
 app.use('/api/industries', require('./mongoose/routes/industriesRoutes'))
 app.use('/api/messages', require('./mongoose/routes/messagesRoutes'))
+
+app.use('/api/categories', require('./mongoose/routes/categoriesRoutes'))
+// app.use('/api/technologies', require('./mongoose/routes/technologiesRoutes'))
 
 app.listen(PORT, () => console.log(`Application is running on port ${PORT}`))
