@@ -13,6 +13,7 @@ import IndustryEdit from './components/industries/IndustryEdit'
 import TechnologyCreate from './components/technologies/TechnologyCreate'
 import TechnologyEdit from './components/technologies/TechnologyEdit'
 import CategoryCreate from './components/categories/CategoryCreate'
+import CategoryEdit from './components/categories/CategoryEdit'
 
 const adminTheme = createMuiTheme({
   palette: {
@@ -61,6 +62,7 @@ function App() {
             <Route path='/industries/edit/:id' component={IndustryEdit} />
             <Route path='/industries' component={Industries} />
             <Route path='/categories/create' component={CategoryCreate} />
+            <Route path='/categories/edit/:id' component={CategoryEdit} />
             <Route path='/messages' component={Messages} />
             <Route path='/messages' component={Messages} />
           </Switch>

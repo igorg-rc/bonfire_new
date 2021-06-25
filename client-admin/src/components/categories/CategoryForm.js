@@ -18,10 +18,11 @@ const useStyles = makeStyles((theme) => ({
     width: 120,
   },
   input: {
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.primary,
     width: '725px',
   },
-  formInputs: {
+  label: {
+    color: theme.palette.text.primary
   }
 }))
 
@@ -47,6 +48,7 @@ export default function CategoryForm({ item, onSubmit }) {
                 variant="outlined" 
                 color="primary"
                 inputProps={{ className: styles.input }}
+                InputLabelProps={{ className: styles.label }}
                 name="title"
                 id="title"
                 defaultValue={item ? item.title: ""}

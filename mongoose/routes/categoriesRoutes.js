@@ -29,7 +29,7 @@ const tech_upload = multer({
 //=============== Categories routes =================//
 
 router.get('/', async (req, res) => {
-  const categories = await Category.find()
+  const categories = await Category.find().populate('technologies')
   try {
     res.status(200).json(categories)
   } catch (error) {

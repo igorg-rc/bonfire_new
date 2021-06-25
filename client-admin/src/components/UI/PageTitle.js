@@ -30,14 +30,14 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function PageTitle(props) {
-  const {  title, withActions, handleCreateBtn, handleDeleteBtn } = props
+  const {  title, withActions, handleEditBtn, handleDeleteBtn } = props
   const styles = useStyles()
 
   return (
     <div className={styles.pageTitle}>
       <span>{title}</span>
       <span className={styles.actions} style={{ display: withActions ? 'inline' : 'none' }}>
-        <IconButton className={styles.actionBtn} color="primary" onClick={handleCreateBtn}>
+        <IconButton className={styles.actionBtn} color="primary" onClick={handleEditBtn}>
           <Create className={styles.actionIcon} />
         </IconButton>
         <IconButton className={styles.actionBtn} color="primary" onClick={handleDeleteBtn}>

@@ -1,6 +1,7 @@
 const INDUSTRIES_BASE_URL = '/api/industries'
-// const TECHNOLOGIES_BASE_URL = '/api/technologies'
+const CATEGORIES_BASE_URL = '/api/categories'
 const MESSAGES_BASE_URL = '/api/messages'
+
 
 // Industries api actions
 export const getIndustries = () => fetch(INDUSTRIES_BASE_URL)
@@ -28,6 +29,43 @@ export const updateIndustry = (id, industry) => fetch(`${INDUSTRIES_BASE_URL}/${
 export const deleteIndustry = id => fetch(`${INDUSTRIES_BASE_URL}/${id}`, { method: 'DELETE' })
   .then(id => console.log(`Industry with id ${id} was successfuly deleted`))
   .catch(error => console.log(error))
+
+
+// Categories actions
+export const getCategories = () => fetch(CATEGORIES_BASE_URL)
+  .then(categories => categories.json())
+  .catch(error => console.log(error))
+
+export const getCategory = catId => fetch(`${CATEGORIES_BASE_URL}/${catId}`)
+  .then(category => category.json())
+  .catch(err => console.log(err))
+
+export const createCategory = data => fetch(CATEGORIES_BASE_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+  .then(category => category.json())
+  .catch(err => console.log(err))
+
+export const updateCategory = (catId, data) => fetch(`${CATEGORIES_BASE_URL}/${catId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+  .then(category => category.json())
+  .catch(err => console.log(err))
+
+export const deleteCategory = catId => fetch(`${CATEGORIES_BASE_URL}/${catId}`, {
+    method: "DELETE"
+  })
+  .then(category => console.log("Category was successfuly deleted"))
+  .catch(err => console.log(err))
+
+// Technologies actions
+export const getTechnologies = catId => fetch(`${CATEGORIES_BASE_URL}/${catId}/tech`)
+
+
 
 // Messages api actions
 export const getMessages = () => fetch(MESSAGES_BASE_URL)

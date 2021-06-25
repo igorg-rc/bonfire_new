@@ -2,16 +2,16 @@ import { useEffect, useState } from "react"
 import { useHistory } from "react-router"
 import { makeStyles, Table, TableBody, TableCell, TableHead, TableRow, IconButton } from "@material-ui/core"
 import { Delete, Create } from '@material-ui/icons'
-import techData from "../../mocData/techData"
+// import techData from "../../mocData/techData"
 import PageTitle from "../UI/PageTitle"
-import AddButton from "../UI/AddButton"
+import { deleteCategory, getCategories } from "../../api/api"
 
 const useStyles = makeStyles(theme => ({
   main: {
    
   },
   tableHolder: {
-    padding: '20px 0 0 50px'
+    padding: '20px 0 30px 50px'
   },
   table: {
     // minWidth: 650,
@@ -54,12 +54,22 @@ const useStyles = makeStyles(theme => ({
 
 export default function TechnologiesTable() {
   const styles = useStyles()
-  const [technologies, setTechnologies] = useState({})
+  const [categories, setCategories] = useState([])
   const history = useHistory()
 
   useEffect(() => {
-    setTechnologies(techData)
+    const fetchCategories = async () => {
+      const fetchedCategories = await getCategories()
+      setCategories(fetchedCategories)
+    }
+    fetchCategories()
   }, [])
+
+  const deleteCategoryHandler = async id => {
+    await deleteCategory(id)
+    const newList = categories.filter(item => item._id !== id)
+    setCategories(newList)
+  }
 
   const deleteTechnology = id => {
     // const newList = technologies.filter(item => item.id !== id)
@@ -67,160 +77,49 @@ export default function TechnologiesTable() {
     // setTechnologies(newList)
   }
 
-  const frontendList = <div>
-    <PageTitle title="Frontend" withActions />
-    
-    <div className={styles.tableHolder}>
-  <Table className={styles.table} size="small" aria-label="a danse table" color="textPrimary">
-    <TableHead>
-      <TableRow>
-        <TableCell className={[styles.tableCell, styles.tableCellHead].join(' ')}>Image</TableCell>
-        <TableCell className={[styles.tableCell, styles.tableCellHead, styles.tableTitleColumn].join(' ')} align="left">Title</TableCell>
-        <TableCell className={[styles.tableCell, styles.tableCellHead].join(' ')} align="right">Actions</TableCell>
-      </TableRow>
-    </TableHead>
-
-    <TableBody>
-      {techData.frontend.map(row => (
-        <TableRow key={row.imgUrl} color="textPrimary" className={styles.tableRow}>
-          <TableCell className={styles.tableCell} component="td" scope="row">
-            <img src={row.imgUrl} alt={row.title} className={styles.techImage} />
-          </TableCell>
-          <TableCell className={styles.tableCell} component="td" scope="row" align="left">{row.title}</TableCell>
-          <TableCell className={styles.tableCell} component="td" scope="row" align="right">
-            <IconButton className={styles.actionBtn} color="primary" onClick={() => history.push( `/technologies/edit/${row._id}`)}>
-              <Create className={styles.actionIcon} />
-            </IconButton>
-            <IconButton className={styles.actionBtn} color="primary" onClick={() => deleteTechnology(row._id)}>
-              <Delete className={styles.actionIcon} />
-            </IconButton>
-            </TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-  </div>
-  <AddButton primary title="Add technology" onClick={() => history.push('/technologies/create')} />
-  </div>
-
-
-  const backendList = <div>
-  <PageTitle title="Backend" withActions />
-
-  <div className={styles.tableHolder}>
-  <Table className={styles.table} size="small" aria-label="a danse table" color="textPrimary">
-    <TableHead>
-      <TableRow>
-        <TableCell className={[styles.tableCell, styles.tableCellHead].join(' ')}>Image</TableCell>
-        <TableCell className={[styles.tableCell, styles.tableCellHead, styles.tableTitleColumn].join(' ')} align="left">Title</TableCell>
-        <TableCell className={[styles.tableCell, styles.tableCellHead].join(' ')} align="right">Actions</TableCell>
-      </TableRow>
-    </TableHead>
-
-    <TableBody>
-      {techData.backend.map(row => (
-        <TableRow key={row.imgUrl} color="textPrimary" className={styles.tableRow}>
-          <TableCell className={styles.tableCell} component="td" scope="row">
-            <img src={row.imgUrl} alt={row.title} className={styles.techImage} />
-          </TableCell>
-          <TableCell className={styles.tableCell} component="td" scope="row" align="left">{row.title}</TableCell>
-          <TableCell className={styles.tableCell} component="td" scope="row" align="right">
-            <IconButton className={styles.actionBtn} color="primary" onClick={() => history.push( `/technologies/edit/${row._id}`)}>
-              <Create className={styles.actionIcon} />
-            </IconButton>
-            <IconButton className={styles.actionBtn} color="primary" onClick={() => deleteTechnology(row._id)}>
-              <Delete className={styles.actionIcon} />
-            </IconButton>
-            </TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-  </div>
-  <AddButton primary title="Add technology" onClick={() => history.push('/technologies/create')} />
-  </div>
-
-  const toolsList = <div>
-  <PageTitle title="Tools" withActions />
-
-  <div className={styles.tableHolder}>
-  <Table className={styles.table} size="small" aria-label="a danse table" color="textPrimary">
-    <TableHead>
-      <TableRow>
-        <TableCell className={[styles.tableCell, styles.tableCellHead].join(' ')}>Image</TableCell>
-        <TableCell className={[styles.tableCell, styles.tableCellHead, styles.tableTitleColumn].join(' ')} align="left">Title</TableCell>
-        <TableCell className={[styles.tableCell, styles.tableCellHead].join(' ')} align="right">Actions</TableCell>
-      </TableRow>
-    </TableHead>
-
-    <TableBody>
-      {techData.tools.map(row => (
-        <TableRow key={row.imgUrl} color="textPrimary" className={styles.tableRow}>
-          <TableCell className={styles.tableCell} component="td" scope="row">
-            <img src={row.imgUrl} alt={row.title} className={styles.techImage} />
-          </TableCell>
-          <TableCell className={styles.tableCell} component="td" scope="row" align="left">{row.title}</TableCell>
-          <TableCell className={styles.tableCell} component="td" scope="row" align="right">
-            <IconButton className={styles.actionBtn} color="primary" onClick={() => history.push( `/technologies/edit/${row._id}`)}>
-              <Create className={styles.actionIcon} />
-            </IconButton>
-            <IconButton className={styles.actionBtn} color="primary" onClick={() => {}}>
-              <Delete className={styles.actionIcon} />
-            </IconButton>
-            </TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-  </div>
-  <AddButton primary title="Add technology" onClick={() => history.push('/technologies/create')} />
-  </div>
-
-  const apiList = <div>
-  <PageTitle title="API" withActions />
-
-  <div className={styles.tableHolder}>
-  <Table className={styles.table} size="small" aria-label="a danse table" color="textPrimary">
-    <TableHead>
-      <TableRow>
-        <TableCell className={[styles.tableCell, styles.tableCellHead].join(' ')}>Image</TableCell>
-        <TableCell className={[styles.tableCell, styles.tableCellHead, styles.tableTitleColumn].join(' ')} align="left">Title</TableCell>
-        <TableCell className={[styles.tableCell, styles.tableCellHead].join(' ')} align="right">Actions</TableCell>
-      </TableRow>
-    </TableHead>
-
-    <TableBody>
-      {techData.api.map(row => (
-        <TableRow key={row.imgUrl} color="textPrimary" className={styles.tableRow}>
-          <TableCell className={styles.tableCell} component="td" scope="row">
-            <img src={row.imgUrl} alt={row.title} className={styles.techImage} />
-          </TableCell>
-          <TableCell className={styles.tableCell} component="td" scope="row" align="left">{row.title}</TableCell>
-          <TableCell className={styles.tableCell} component="td" scope="row" align="right">
-            <IconButton className={styles.actionBtn} color="primary" onClick={() => history.push( `/technologies/edit/${row._id}`)}>
-              <Create className={styles.actionIcon} />
-            </IconButton>
-            <IconButton className={styles.actionBtn} color="primary" onClick={() => {}}>
-              <Delete className={styles.actionIcon} />
-            </IconButton>
-          </TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-  </div>
-  <AddButton primary title="Add technology" onClick={() => history.push('/technologies/create')} />
-  </div>
-
-  console.log(technologies)
+  console.log(categories)
 
   return (
-    !technologies ? <div>Loading...</div> : 
+    !categories ? <div>Loading...</div> : 
     <div className={styles.main}>
-      {frontendList}
-      {backendList}
-      {apiList}
-      {toolsList}
+      { categories.map(category => (
+        <div key={category._id}>
+          <PageTitle title={category.title} 
+            withActions 
+            handleEditBtn={() => history.push(`/categories/edit/${category._id}`)} 
+            handleDeleteBtn={() => deleteCategoryHandler(category._id)}
+          />
+            <div className={styles.tableHolder}>
+            <Table className={styles.table} size="small" aria-label="a danse table" color="textPrimary">
+              <TableHead>
+                <TableRow>
+                  <TableCell className={[styles.tableCell, styles.tableCellHead].join(' ')}>Image</TableCell>
+                  <TableCell className={[styles.tableCell, styles.tableCellHead, styles.tableTitleColumn].join(' ')} align="left">Title</TableCell>
+                  <TableCell className={[styles.tableCell, styles.tableCellHead].join(' ')} align="right">Actions</TableCell>
+                </TableRow>
+              </TableHead>
+
+              <TableBody>
+                {category.technologies.map(row => (
+                  <TableRow key={row.imgUrl} color="textPrimary" className={styles.tableRow}>
+                    <TableCell className={styles.tableCell} component="td" scope="row">
+                      <img src={row.imgUrl} alt={row.title} className={styles.techImage} />
+                    </TableCell>
+                    <TableCell className={styles.tableCell} component="td" scope="row" align="left">{row.title}</TableCell>
+                    <TableCell className={styles.tableCell} component="td" scope="row" align="right">
+                      <IconButton className={styles.actionBtn} color="primary" onClick={() => history.push( `/technologies/edit/${row._id}`)}>
+                        <Create className={styles.actionIcon} />
+                      </IconButton>
+                      <IconButton className={styles.actionBtn} color="primary" onClick={() => {}}>
+                        <Delete className={styles.actionIcon} />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>))}
     </div>
   )
 }
