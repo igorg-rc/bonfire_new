@@ -56,8 +56,8 @@ function App() {
           <Drawer />
           <Switch>
             <Route path='/' exact component={Technologies} />
-            <Route path='/technologies/create' component={TechnologyCreate} />
-            <Route path='/technologies/edit/:id' component={TechnologyEdit} />
+            <Route path='/technologies/:catId/create' component={TechnologyCreate} />
+            <Route path='/:catId/tech/:techId/edit' component={TechnologyEdit} />
             <Route path='/industries/create' component={IndustryCreate} />
             <Route path='/industries/edit/:id' component={IndustryEdit} />
             <Route path='/industries' component={Industries} />

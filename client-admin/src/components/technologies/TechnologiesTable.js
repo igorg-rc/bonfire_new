@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 import { useHistory } from "react-router"
 import { makeStyles, Table, TableBody, TableCell, TableHead, TableRow, IconButton } from "@material-ui/core"
 import { Delete, Create } from '@material-ui/icons'
-// import techData from "../../mocData/techData"
+import AddButton from "../UI/AddButton"
 import PageTitle from "../UI/PageTitle"
-import { deleteCategory, getCategories } from "../../api/api"
+import { deleteCategory, deleteTechnology, getCategories } from "../../api/api"
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -14,7 +14,6 @@ const useStyles = makeStyles(theme => ({
     padding: '20px 0 30px 50px'
   },
   table: {
-    // minWidth: 650,
     color: 'black'
   },
   tableRow: {
@@ -71,10 +70,12 @@ export default function TechnologiesTable() {
     setCategories(newList)
   }
 
-  const deleteTechnology = id => {
-    // const newList = technologies.filter(item => item.id !== id)
-    // const newList = industries.filter(item => item.id !== id)
-    // setTechnologies(newList)
+  const deleteTechnologyHandler = async (catId, techId) => {
+    await deleteTechnology(catId, techId)
+    const newList = categories.filter(item => item._id !== techId)
+    setCategories(newList)
+    console.log("deleted")
+    window.location.reload()
   }
 
   console.log(categories)
@@ -82,6 +83,7 @@ export default function TechnologiesTable() {
   return (
     !categories ? <div>Loading...</div> : 
     <div className={styles.main}>
+      { categories.length === 0 && <PageTitle title="Technologies" /> }
       { categories.map(category => (
         <div key={category._id}>
           <PageTitle title={category.title} 
@@ -107,10 +109,13 @@ export default function TechnologiesTable() {
                     </TableCell>
                     <TableCell className={styles.tableCell} component="td" scope="row" align="left">{row.title}</TableCell>
                     <TableCell className={styles.tableCell} component="td" scope="row" align="right">
-                      <IconButton className={styles.actionBtn} color="primary" onClick={() => history.push( `/technologies/edit/${row._id}`)}>
+                      <IconButton 
+                        className={styles.actionBtn} color="primary" 
+                        onClick={() => history.push(`/${row.categoryId}/tech/${row._id}/edit`)}
+                      >
                         <Create className={styles.actionIcon} />
                       </IconButton>
-                      <IconButton className={styles.actionBtn} color="primary" onClick={() => {}}>
+                      <IconButton className={styles.actionBtn} color="primary" onClick={() => deleteTechnologyHandler(row.categoryId, row._id)}>
                         <Delete className={styles.actionIcon} />
                       </IconButton>
                     </TableCell>
@@ -119,6 +124,7 @@ export default function TechnologiesTable() {
               </TableBody>
             </Table>
           </div>
+          <AddButton primary title="Add technology" onClick={() => history.push(`/technologies/${category._id}/create`)} />
         </div>))}
     </div>
   )

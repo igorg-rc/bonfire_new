@@ -27,7 +27,6 @@ const tech_upload = multer({
 })
 
 //=============== Categories routes =================//
-
 router.get('/', async (req, res) => {
   const categories = await Category.find().populate('technologies')
   try {
@@ -105,14 +104,13 @@ router.get('/:catId/tech', async (req, res) => {
 })
 
 router.get('/:catId/tech/:techId', async (req, res) => {
-  const { catId, techId } = req.params
-  // const technology = await category.technologies.findById(techId)
+  const { techId } = req.params
   try {
-    const category = await Category.findById(catId)
-    if (!mongoose.Schema.Types.ObjectId.isValid(techId)) {
-      return res.status(404).json(`Category with id ${id} was not found.`)
+    const technology = await Technology.findById(techId)
+    if (!technology) {
+      return res.status(404).json(`Technology with id ${techId} was not found.`)
     }
-    res.status(200).json(category)
+    res.status(200).json(technology)
   } catch (error) {
     return res.status(500).json(error)
   }
@@ -144,12 +142,16 @@ router.patch('/:catId/tech/:techId', tech_upload.single('image'), async (req, re
   const new_imgUrl = image.path
 
   const technology = await Technology.findById(techId)
-  deleteFile(technology.imgUrl)
-  technology.title = title
-  technology.imgUrl = new_imgUrl
-  await technology.save()
+  try {
+    deleteFile(technology.imgUrl)
+    technology.title = title
+    technology.imgUrl = new_imgUrl
+    await technology.save()
+  } catch (error) {
+    res.status(500).json(error)
+  }
 
-  res.status(201).json(technology)
+  res.status(200).json(technology)
 })
 
 router.delete('/:catId/tech/:techId', async (req, res) => {
@@ -163,7 +165,7 @@ router.delete('/:catId/tech/:techId', async (req, res) => {
 
   try {
     await category.save()
-    res.status(201).json({ message: `Technology was was successfuly deleted` })
+    res.status(201).json({ message: `Technology was successfuly deleted` })
   } catch (error) {
     return res.status(500).json(error)
   }

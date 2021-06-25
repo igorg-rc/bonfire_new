@@ -40,7 +40,6 @@ export default function ItemForm({ item, onSubmit }) {
 
   const submitHandler = data => {
     onSubmit(data)
-    // history.push('/industries')
   }
 
   return (

@@ -63,9 +63,29 @@ export const deleteCategory = catId => fetch(`${CATEGORIES_BASE_URL}/${catId}`, 
   .catch(err => console.log(err))
 
 // Technologies actions
-export const getTechnologies = catId => fetch(`${CATEGORIES_BASE_URL}/${catId}/tech`)
+export const getTechnology = (catId, techId) => fetch(`${CATEGORIES_BASE_URL}/${catId}/tech/${techId}`)
+  .then(technology => technology.json())
+  .catch(error => console.log(error))
 
+export const createTechnology = (catId, technology) => fetch(`${CATEGORIES_BASE_URL}/${catId}/tech`, {
+    method: "POST",
+    body: technology
+  })
+  .then(technology => technology.json())
+  .catch(error => console.log(error))
 
+  export const updateTechnology = (catId, techId, technology) => fetch(`${CATEGORIES_BASE_URL}/${catId}/tech/${techId}`, {
+    method: "PATCH",
+    body: technology
+  })
+  .then(technology => technology.json())
+  .catch(error => console.log(error))
+
+export const deleteTechnology = (catId, techId) => fetch(`${CATEGORIES_BASE_URL}/${catId}/tech/${techId}`, {
+    method: "DELETE"
+  })
+  .then(technology => console.log(`Technology with id ${techId} was successfuly deleted.`))
+  .catch(error => console.log(error))
 
 // Messages api actions
 export const getMessages = () => fetch(MESSAGES_BASE_URL)

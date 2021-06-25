@@ -27,6 +27,5 @@ app.use('/api/industries', require('./mongoose/routes/industriesRoutes'))
 app.use('/api/messages', require('./mongoose/routes/messagesRoutes'))
 
 app.use('/api/categories', require('./mongoose/routes/categoriesRoutes'))
-// app.use('/api/technologies', require('./mongoose/routes/technologiesRoutes'))
 
 app.listen(PORT, () => console.log(`Application is running on port ${PORT}`))

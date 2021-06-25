@@ -1,21 +1,30 @@
 import { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useRouteMatch } from 'react-router-dom'
+import { getTechnology, updateTechnology } from '../../api/api'
 import ItemForm from "../UI/ItemForm"
 import PageTitle from "../UI/PageTitle"
 
 export default function TechnologyEdit() {
-  const [technology, setTechnology] = useState(null)
+  const [technology, setTechnology] = useState()
   const history = useHistory()
-  
+  const match = useRouteMatch()
+
   useEffect(() => {
-    setTechnology({
-      title: 'Technology title',
-      image: 'sdlfkjsdlklsdfskdfsdklfsad'
-    })
+    const fetchTechnology = async (catId, techId) => {
+      const fetchedTechnology = await getTechnology(match.params.catId, match.params.techId)
+      setTechnology(fetchedTechnology)
+    } 
+    fetchTechnology()
   }, [])
 
-  const submitHandler = (data) => {
-    console.log(data)
+  console.log(technology)
+
+  const submitHandler = async (data) => {
+    const formData = new FormData()
+    formData.append('title', data.title)
+    formData.append('image', data.image[0])
+    console.log(data.title, data.image[0]) 
+    await updateTechnology(match.params.catId, match.params.techId, formData)
     history.push('/')
   }
   
