@@ -11,7 +11,7 @@ import './LandingLayout.css'
 export default function LandingLayout({children}) {
   return (
     <div className="App">
-      {/* { children } */}
+      { children }
       <Header />
       <HelloScreen />
       <Technologies />

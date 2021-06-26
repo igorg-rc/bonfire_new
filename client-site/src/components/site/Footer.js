@@ -78,8 +78,8 @@ export default function Footer() {
         <Grid container spacing={3} className={styles.footerGrid}>
           <Grid item xs={12} lg={5} className={styles.copyright}>
             <Typography component="h5" className={styles.columnTitle} variant="h5">Bonfire<span className={ styles.columnTitleSpan}>Apps</span></Typography>
-            <Typography component="p" className={styles.coperightInfo}>Make future today. Let the bonfire outflame.</Typography>
-            <Typography component="p" className={styles.coperightInfo}>&copy; <span>{current_year}</span>, BonfireApps. All rights reserved.</Typography>
+            <Typography paragraph className={styles.coperightInfo}>Make future today. Let the bonfire outflame.</Typography>
+            <Typography paragraph className={styles.coperightInfo}>&copy; <span>{current_year}</span>, BonfireApps. All rights reserved.</Typography>
           </Grid>
 
             <Grid item xs={12} lg={3}>
@@ -87,14 +87,14 @@ export default function Footer() {
               <ul className={styles.linksList}>
                 <li>
                   <Link 
-                  className={styles.linkItem}
-                  href="#technologies"
-                  to={"technologies"}
-                  spy={true}
-                  smooth={true}
-                  offset={-70}
-                  duration={750}
-                  color="inherit"
+                    className={styles.linkItem}
+                    href="#technologies"
+                    to={"technologies"}
+                    spy={true}
+                    smooth={true}
+                    offset={-70}
+                    duration={750}
+                    color="inherit"
                   >
                   Technologies
                   </Link>
@@ -135,9 +135,7 @@ export default function Footer() {
                 {contactPoints}
               </ul>
             </Grid>
-
         </Grid>
-
       </Container>
     </div>
   )

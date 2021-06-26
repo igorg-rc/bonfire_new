@@ -56,10 +56,9 @@ export default function ContactForm() {
               label="Name" 
               fullWidth 
               autoComplete="off" 
-              focused={{ className: styles.focused }}
+              focused
               color="primary"
               InputProps={{ className: styles.Input }}
-              // InputLabelProps={{ className: styles.label }}
               inputProps={{ className: styles.input }}
               {...register('senderName')}
               />
@@ -69,10 +68,9 @@ export default function ContactForm() {
               id="email" 
               label="Email" 
               fullWidth 
-              focused={{ className: styles.focused }}
+              focused
               color="primary"
               InputProps={{ className: styles.Input }}
-              // InputLabelProps={{ className: styles.label }}
               inputProps={{ className: styles.input }}
               {...register('senderEmail')}
               />
@@ -86,9 +84,8 @@ export default function ContactForm() {
               rows={8}
               color="primary"
               InputProps={{ className: styles.Input }}
-              // InputLabelProps={{ className: styles.label }}
               inputProps={{ className: styles.input }}
-              focused={{ className: styles.focused }}
+              focused
               {...register('messageBody')}
             />
           </Grid>
@@ -100,10 +97,7 @@ export default function ContactForm() {
               </Button>
             </div>
           </Grid>
-
         </Grid>
-        
-        
       </form>
       </Container>
     </div>

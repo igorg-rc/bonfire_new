@@ -1,44 +1,11 @@
-import  { useState} from 'react';
-import PropTypes from 'prop-types';
+import  { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Tabs, Tab, Typography, Box, Container, Grid, Paper } from '@material-ui/core/';
-import technologiesData from '../../mocData/techData'
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
+import { AppBar, Container, Grid, Typography } from '@material-ui/core/';
+import { TabList, Tabs, Tab, TabPanel } from 'react-tabs'
+import { getTechnologies } from '../../api/api';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  main: {
     padding: '20vh 0',
     backgroundColor: '#212121',
     color: '#fff',
@@ -49,18 +16,26 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff'
   },
   appBar: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   tabs: {
+
+  },
+  tabList: {
+    listStyleType: 'none',
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    justifyContent: 'space-between',
+    padding: '5vh 0'
   },
   tab: {
     color: '#009688',
+    width: '100%',
+    padding: '10px 0',
     '&:hover': {
       color: '#fff',
-      backgroundColor: 'rgba(255,255,255, 0.05)'
+      backgroundColor: 'rgba(255,255,255, 0.05)',
+      fontSize: 20,
+      cursor: 'pointer'
     }
   },
   paper: {
@@ -70,10 +45,11 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "transparent",
     border: '1px solid #fff'
   },
-  // tab: {},
   tabLabel: {
     fontSize: '1.4rem',
     fontWeight: '900',
+    margin: '0 5px',
+    
     '&:hover': {
       backgroundColor: 'transparent'
     }
@@ -84,78 +60,46 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Technologies() {
-  const classes = useStyles();
-  const [value, setValue] = useState(0);
+  const styles = useStyles();
+  const [categories, setCategories] = useState([])
+  const [tabIndex, setTabIndex] = useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const fetchedCategories = await getTechnologies()
+      setCategories(fetchedCategories)
+    }
+    fetchCategories()
+  }, [])
+
+  console.log(tabIndex)
 
   return (
-    <div className={classes.root} id="technologies">
+    <div className={styles.main} id="technologies">
       <Container>
-      <Typography className={classes.sectionTitle} variant="h2" component="h2">Technologies</Typography>
-      <AppBar position="static" className={classes.appBar} elevation={0}>
-        <Tabs 
-          value={value} 
-          onChange={handleChange} 
-          aria-label="simple tabs example" 
-          indicatorColor="secondary"
-          textColor="secondary"
-          variant="fullWidth"
-          className={classes.tabs}
-        >
-          <Tab className={classes.tab} label={<span className={classes.tabLabel}>Frontend</span>} {...a11yProps(0)}  />
-          <Tab className={classes.tab} label={<span className={classes.tabLabel}>Backend</span>} {...a11yProps(1)}  />
-          <Tab className={classes.tab} label={<span className={classes.tabLabel}>Tools</span>} {...a11yProps(2)}  />
-          <Tab className={classes.tab} label={<span className={classes.tabLabel}>API</span>} {...a11yProps(3)} />
+        <Typography component="h2" className={styles.sectionTitle} variant="h2" component="h2">Technologies</Typography>
+        <Tabs className={styles.tabs} selectedIndex={tabIndex} onSelect={index => setTabIndex(index)}>
+          <TabList className={styles.tabList}>
+            { categories && categories.map(item => (
+              <Tab key={item.title} className={styles.tab}>
+                <span className={styles.tabLabel}>{item.title}</span>
+              </Tab>
+            ))}
+          </TabList>
+
+          { categories && categories.map(item => (
+            <TabPanel key={item._id}>
+              <Grid container spacing={4}>
+                { item.technologies.map(technology => (
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={technology.imgUrl}>
+                    <Typography variant="h6" component="h2">{technology.title}</Typography>
+                    <img src={technology.imgUrl} alt={technology.title} className={styles.techImg} />
+                  </Grid>
+                ))}
+              </Grid>
+            </TabPanel>
+          ))}
         </Tabs>
-      </AppBar>
-      <TabPanel value={value} index={0}>
-        <Grid container spacing={4}>
-        { technologiesData.frontend.map(i => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={i.imgUrl}>
-            <Typography variant="h6" component="h2">{i.title}</Typography>
-            <img src={i.imgUrl} alt={i.title} className={classes.techImg} />
-          </Grid>
-          
-        )) }
-        </Grid>
-      </TabPanel>
-      
-      <TabPanel value={value} index={1}>
-      <Grid container spacing={4}>
-        { technologiesData.backend.map(i => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={i.imgUrl}>
-            <Typography variant="h6" component="h2">{i.title}</Typography>
-            <img src={i.imgUrl} alt={i.title} className={classes.techImg} />
-          </Grid>
-          
-        )) }
-        </Grid>
-      </TabPanel>
-
-      <TabPanel value={value} index={2}>
-      <Grid container spacing={4}>
-        { technologiesData.tools.map(i => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={i.imgUrl}>
-            <Typography variant="h6"component="h2">{i.title}</Typography>
-            <img src={i.imgUrl} alt={i.title} className={classes.techImg} />
-          </Grid>
-        )) }
-        </Grid>
-      </TabPanel>
-
-      <TabPanel value={value} index={3}>
-      <Grid container spacing={4}>
-        { technologiesData.api.map(i => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={i.imgUrl}>
-            <Typography variant="h6"component="h2">{i.title}</Typography>
-            <img src={i.imgUrl} alt={i.title} className={classes.techImg} />
-          </Grid>
-        )) }
-        </Grid>
-      </TabPanel>
       </Container>
     </div>
   );

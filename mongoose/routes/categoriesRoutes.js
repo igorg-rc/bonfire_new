@@ -80,7 +80,7 @@ router.delete('/:catId', async (req, res) => {
       .then(technologies => technologies.forEach(technology => deleteFile(technology.imgUrl)))
       .catch(error => console.log(error))
 
-    const technologies = await Technology.find({ categoryId: catId }).deleteMany()
+    await Technology.find({ categoryId: catId }).deleteMany()
     
     await Category.findByIdAndRemove(catId)
 
@@ -93,6 +93,39 @@ router.delete('/:catId', async (req, res) => {
 
 
 //=============== Technologies routes =================//
+router.get('/tech', async (req, res) => {
+  try {
+    const technologies = await Technology.find()
+    if (!technologies) return status(404).json('Technologies were not found.')
+    res.status(200).json(technologies)
+  } catch (error) {
+    return res.status(522).json(error)
+  }
+})
+
+
+router.get('/tech/:techId', async (req, res) => {
+  const { techId } = req.params
+  try {
+    const technology = await Technology.findById(techId)
+    if (!technology) return res.status(404).json(`Technology with id ${techId} was not found...`)
+    res.status(200).json(technology)
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+})
+
+router.delete('/tech/:techId', async (req, res) => {
+  const { techId } = req.params
+  try {
+    await Technology.findByIdAndRemove(techId)
+    if (!mongoose.Types.ObjectId.isValid(techId)) return res.status(404).json(`Technology with with ${techId} was not found.`)
+    res.status(201).json(`Technology with with ${techId} was successfuly deleted.`)
+  } catch (error) {
+    
+  }
+})
+
 router.get('/:catId/tech', async (req, res) => {
   const { catId } = req.params
   const category = await Category.findById(catId)
