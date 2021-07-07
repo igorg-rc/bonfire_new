@@ -33,10 +33,15 @@ const useStyles = makeStyles((theme) => ({
     padding: '10px 0',
     '&:hover': {
       color: '#fff',
-      backgroundColor: 'rgba(255,255,255, 0.05)',
+      backgroundColor: 'rgba(255,255,255, 0.03)',
       fontSize: 20,
       cursor: 'pointer'
     }
+  },
+  tabActive: {
+    color: '#fff',
+    backgroundColor: 'rgba(255,255,255, 0.1)',
+    fontSize: 20,
   },
   paper: {
     padding: theme.spacing(2),
@@ -80,8 +85,8 @@ export default function Technologies() {
         <Typography component="h2" className={styles.sectionTitle} variant="h2" component="h2">Technologies</Typography>
         <Tabs className={styles.tabs} selectedIndex={tabIndex} onSelect={index => setTabIndex(index)}>
           <TabList className={styles.tabList}>
-            { categories && categories.map(item => (
-              <Tab key={item.title} className={styles.tab}>
+            { categories && categories.map((item, index) => (
+              <Tab key={item.title} className={tabIndex === index ? [styles.tab, styles.tabActive].join(' ') : styles.tab}>
                 <span className={styles.tabLabel}>{item.title}</span>
               </Tab>
             ))}

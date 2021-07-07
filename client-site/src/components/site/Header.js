@@ -1,15 +1,16 @@
-import { AppBar, Toolbar, Container, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
-import { useEffect } from 'react'
-import { useState } from 'react'
+import { AppBar, Toolbar, Container, Typography, IconButton, Menu, MenuItem, useMediaQuery } from '@material-ui/core'
+import { makeStyles, useTheme } from '@material-ui/styles'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-scroll'
+import { MenuRounded } from '@material-ui/icons'
+
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
     height: '65px',
     backgroundColor: '#00796b',
     position: 'fixed',
-    margin: 0
+    margin: 0,
   },
   appBarChanged: {
     height: '60px',
@@ -27,6 +28,13 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  toolbar: {
+    margin: 0,
+    padding: 0
+  },
+  toolbarMobile: {
+    background: '#000'
+  },
   navLink: {
     color: "#e0e0e0",
     flexGrow: 0.05,
@@ -38,19 +46,30 @@ const useStyles = makeStyles((theme) => ({
   brandLink: {
     textAlign: 'left'
   },
+  listItemActive: {
+    fontWeight: 800
+  },
+
+  navLinkMobile: {
+    color: "#212121",
+    flexGrow: 0.05,
+    fontSize: 15
+  },
+  brandLinkMobile: {
+    textAlign: 'center'
+  },
+
   blockLinks: {
     textAlign: 'right',
     display: 'block',
-    // [theme.breakpoints.down('xs')]: {
-    //   display: 'none'
-    // },
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      flexDirecion: 'column'
+    }
   },
   menuIcon: {
     color: "#e0e0e0",
     flexGrow: 0.05,
-    // [theme.breakpoints.up('xs')]: {
-    //   display: 'none'
-    // },
     '&:hover': {
       color: '#fff'
     }
@@ -60,9 +79,42 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const classes = useStyles()
-
+  const theme = useTheme()
   const [colorChanged, setColorChanged] = useState(false)
-  const [backdropIsOpen, setBackdropIsOpen] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const handleMenu = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClick = pageURL => {
+    setAnchorEl(null);
+  };
+
+  const handleLinkClick = (event, index) => {
+    setSelectedIndex(index)
+  };
+
+  const menuItems = [
+    {
+      index: 1,
+      menuTitle: "Technologies",
+      pageURL: "technologies"
+    },
+    {
+      index: 2,
+      menuTitle: "Industries",
+      pageURL: "industries"
+    },
+    {
+      index: 3,
+      menuTitle: "Contact us",
+      pageURL: "contact_us"
+    }
+  ];
 
   const changeNavbarBg = () => {
     if (window.scrollY <= 100) {
@@ -72,23 +124,6 @@ export default function Header() {
     }
   }
 
-  const backdrop = (
-    <div style={{ 
-      height: '100%', 
-      width: '70%', 
-      zIndex: '999', 
-      background: '#000', 
-      color: '#fff', 
-      position: 'absolute', 
-      display: backdropIsOpen ? 'block' : 'none' 
-    }}>
-      <ul>
-        <li>One</li>
-        <li>Two</li>
-        <li>Three</li>
-      </ul>
-    </div>
-  )
   
   useEffect(() => {
     window.addEventListener('scroll', changeNavbarBg);
@@ -97,10 +132,11 @@ export default function Header() {
 
   return (
       <div className={classes.root}>
-        {/* <div id="backdrop" onClick={() => setBackdropIsOpen(!backdropIsOpen)}>{ backdrop }</div> */}
+        
         <AppBar elevation={0} className={colorChanged ? classes.appBar : classes.appBarChanged}>
+          { !isMobile ? (
           <Container>
-            <Toolbar style={{ margin: 0, padding: 0}}>
+            <Toolbar className={classes.toolbar}>
               <Link 
                 className={[classes.navLink, classes.brandLink].join(' ')} 
                 color="inherit"
@@ -156,11 +192,74 @@ export default function Header() {
                 >
                 Contact us
               </Link>
-              {/* <IconButton onClick={() => setBackdropIsOpen(!backdropIsOpen)}>
-                <MenuRounded className={classes.menuIcon} />
-              </IconButton> */}
             </Toolbar>
-          </Container>
+          </Container> 
+          ) : ( 
+            <Container>
+            <Toolbar className={classes.toolbar}>
+              <Link 
+                className={[classes.navLink, classes.brandLink].join(' ')} 
+                color="inherit"
+                href="#hello_screen"
+                to="hello_screen"
+                spy={true}
+                smooth={true}
+                offset={-70}
+                duration={750}
+                color="inherit"
+                style={{ textAlign: 'left!important'}}
+              >
+                BonfireApps
+              </Link>
+
+              <IconButton onClick={handleMenu} style={{ marginLeft: 'auto' }}>
+                <MenuRounded className={classes.menuIcon} />
+              </IconButton> 
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right"
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right"
+                }}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+              >
+                {menuItems.map(menuItem => {
+                  const { menuTitle, pageURL, index } = menuItem;
+                  return (
+                    <div onClick={() => handleMenuClick(pageURL)}>
+                      <MenuItem key={menuTitle} className={classes.menuItem} >
+                        <Link 
+                          className={
+                            [classes.navLinkMobile, classes.brandLinkMobile].join(' ')
+                          } 
+                          color="inherit"
+                          href={`#${pageURL}`}
+                          to={pageURL}
+                          spy={true}
+                          smooth={true}
+                          duration={750}
+                          color="inherit"
+                          selected={selectedIndex === index}
+                          style={{ textAlign: 'center!important'}}
+                          onClick={() => handleLinkClick('click', index)}
+                        >
+                          {menuTitle}
+                        </Link>
+                      </MenuItem>
+                    </div>
+                  );
+                })}
+              </Menu>
+            </Toolbar>
+            </Container>
+          )}
         </AppBar>
       </div>
   )

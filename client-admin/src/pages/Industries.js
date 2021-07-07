@@ -39,13 +39,13 @@ export default function Industries() {
   const deleteItemHandler = async id => {
     try {
       await deleteIndustry(id)
-      setIndustries(industries.filter(item => item.id !== id))
+      setIndustries(industries.filter(item => item._id !== id))
     } catch (error) {
       console.log(error)      
     }
     // history.push('/')
     // history.replace('/industries')
-    window.location.reload(false)
+    // window.location.reload(false)
   }
 
   

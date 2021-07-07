@@ -34,7 +34,7 @@ export default function ContactForm() {
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm()
 
-  const submitHandler = async data => {
+  const submitHandler = async (data, event) => {
     console.log(data)
     try {
       await createMessage(data)
@@ -42,6 +42,7 @@ export default function ContactForm() {
     } catch (error) {
       console.log(error)
     }
+    event.target.reset()
   }
 
   return (

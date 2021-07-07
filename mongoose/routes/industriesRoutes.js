@@ -30,8 +30,6 @@ router.post('/', upload.single('image'), async (req, res) => {
   const image = req.file
   const imgUrl = image.path
   console.log(image)
-  // const imgUrl = req.file
-
   
   try {
     const newIndustry = new Industry({ title, imgUrl })
